@@ -1,0 +1,1 @@
+# pom_stepik_autotesting
