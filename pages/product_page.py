@@ -14,7 +14,7 @@ class ProductPage(BasePage):
 
     def should_be_added_product_message(self, product_name):
         added_product_message = self.browser.find_element(*ProductPageLocators.ADDED_PRODUCT_MESSAGE).text
-        assert product_name in added_product_message
+        assert product_name == added_product_message
 
     def should_be_added_product_price_message(self, product_price):
         added_product_price_message = self.browser.find_element(*ProductPageLocators.ADDED_PRODUCT_PRICE_MESSAGE).text
