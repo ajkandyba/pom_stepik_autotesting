@@ -1,5 +1,8 @@
+import time
+
 from pages.product_page import ProductPage
-from pages.locators import ProductPageLocators
+from pages.login_page import LoginPage
+
 import pytest
 
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
@@ -56,3 +59,43 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
+
+
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        self.email = str(time.time()) + "@fakemail.org"
+        self.password = str(time.time())
+        self.link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207'
+        self.page = ProductPage(browser, self.link)
+        self.page.open()
+        self.page.go_to_login_page()
+        self.login_page = LoginPage(browser, browser.current_url)
+        self.login_page.register_new_user(self.email, self.password)
+        self.page.should_be_authorized_user()
+
+
+    def test_user_cant_see_success_message(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207'
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
+    def test_user_add_project_to_cart(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207'
+        page = ProductPage(browser, link)
+        page.open()
+        product_name = page.get_product_name()
+        product_price = page.get_product_price()
+        page.add_to_cart()
+        page.should_be_added_product_message(product_name)
+        page.should_be_added_product_price_message(product_price)
+
+# def test_register_user(browser):
+#     link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207'
+#     page = ProductPage(browser, link)
+#     page.open()
+#     page.go_to_login_page()
+#     login_page = LoginPage(browser, browser.current_url)
+#     login_page.register_new_user('email@ail.com', '123Dvwdvwvwv')
+#     page.should_be_authorized_user()
