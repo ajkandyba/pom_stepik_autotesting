@@ -90,12 +90,3 @@ class TestUserAddToBasketFromProductPage():
         page.add_to_cart()
         page.should_be_added_product_message(product_name)
         page.should_be_added_product_price_message(product_price)
-
-# def test_register_user(browser):
-#     link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207'
-#     page = ProductPage(browser, link)
-#     page.open()
-#     page.go_to_login_page()
-#     login_page = LoginPage(browser, browser.current_url)
-#     login_page.register_new_user('email@ail.com', '123Dvwdvwvwv')
-#     page.should_be_authorized_user()
